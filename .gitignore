@@ -1,15 +1,12 @@
 # Ignore everything in Data
 Data/*
 
-# Re-allow Figures folder and its contents
-!Data/Figures/
-!Data/Figures/**
-
-# Ignore everything in Results
+# Ignore generated results
 Results/*
 
-# Allow Results placeholder
-!Results/.gitkeep
+# Keep folder structure
+!Results/Figures/
+!Results/Figures/.gitkeep
 
 # Python cache
 __pycache__/
