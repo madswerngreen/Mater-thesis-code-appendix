@@ -1,0 +1,10 @@
+# Ignore contents, keep folders
+Data/*
+Results/*
+
+# Allow placeholder files
+!Data/.gitkeep
+!Results/.gitkeep
+# Ignore Python cache files
+__pycache__/
+*.pyc
