@@ -1,10 +1,16 @@
-# Ignore contents, keep folders
+# Ignore everything in Data
 Data/*
+
+# Re-allow Figures folder and its contents
+!Data/Figures/
+!Data/Figures/**
+
+# Ignore everything in Results
 Results/*
 
-# Allow placeholder files
-!Data/.gitkeep
+# Allow Results placeholder
 !Results/.gitkeep
-# Ignore Python cache files
+
+# Python cache
 __pycache__/
 *.pyc
