@@ -245,10 +245,39 @@ config  = data["config"]
 #============================================================
 # TEMPORAL PLOT
 #============================================================
-def plot_temporal_comparison(Results, keys, title, outfile):
-    plt.figure(figsize=(12,5))
+def baseline_temporal_plot():
+    key = "epsilon_1"
+    df = Results[key].copy()
 
-    for key in keys:
+    df["hour"] = df["time"].dt.hour
+
+    hourly = (
+        df["hour"]
+        .value_counts()
+        .reindex(range(24), fill_value=0)
+        .sort_index()
+    )
+
+    plt.figure(figsize=(6, 4))
+    plt.bar(hourly.index, hourly.values, label='Number of charging events')
+
+    plt.xticks(range(24))
+    plt.xlabel("Hour of day")
+    plt.ylabel("Public charging events")
+    plt.title("Temporal distribution of charging events")
+    plt.grid(alpha=0.3)
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig("../Results/Figures/charging_temporal_intensities.png", dpi=300)
+    plt.show()
+
+baseline_temporal_plot()
+
+
+def plot_temporal_comparison(Results, keys, names, title, outfile):
+    plt.figure(figsize=(6,3))
+
+    for key, name in zip(keys,names):
         df = Results[key].copy()
         df["hour"] = df["time"].dt.hour
 
@@ -259,7 +288,7 @@ def plot_temporal_comparison(Results, keys, title, outfile):
             .sort_index()
         )
 
-        plt.plot(hourly.index, hourly.values, marker="o", label=key)
+        plt.plot(hourly.index, hourly.values, marker="o", label=name)
 
     plt.xticks(range(24))
     plt.xlabel("Hour of day")
@@ -275,6 +304,7 @@ def plot_temporal_comparison(Results, keys, title, outfile):
 plot_temporal_comparison(
     Results,
     keys=[f"epsilon_{e}" for e in epsilons],
+    names = [f'$\epsilon$={e}' for e in epsilons],
     title="Temporal distribution – ε sensitivity",
     outfile="../Results/Figures/temporal_eps_comparison.png"
 )
@@ -283,7 +313,8 @@ plot_temporal_comparison(
 plot_temporal_comparison(
     Results,
     keys=[f"EV_RANGE_{r}" for r in EV_RANGE_KMs],
-    title="Temporal distribution – EV range sensitivity",
+    names=[rf"$R_{{\mathrm{{max}}}}={r}$" for r in EV_RANGE_KMs],
+    title="Temporal distribution – $R_{max}$ sensitivity",
     outfile="../Results/Figures/temporal_range_comparison.png"
 )
 
@@ -291,7 +322,8 @@ plot_temporal_comparison(
 plot_temporal_comparison(
     Results,
     keys=[f"Dwell_{d}" for d in Dwell_time_depots],
-    title="Temporal distribution – depot dwell threshold",
+    names=[rf"$\tau_{{\mathrm{{depot}}}}={d}$" for d in Dwell_time_depots],
+    title=r"Temporal distribution – $\tau_{{\mathrm{{depot}}}}$ threshold",
     outfile="../Results/Figures/temporal_dwell_comparison.png"
 )
 
@@ -456,7 +488,7 @@ def plot_hotspot_comparison(
             cmap="gray_r",
             aspect="equal"
         )
-        ax.set_ylabel(label)
+        ax.set_ylabel(label,fontsize=20)
 
         # === Column 2: Scenario ===
         ax = axes[i, 1]
@@ -497,9 +529,9 @@ def plot_hotspot_comparison(
         )
 
     # --- Column titles ---
-    axes[0, 0].set_title("Baseline\n(top 5%)")
-    axes[0, 1].set_title("Scenario\n(top 5%)")
-    axes[0, 2].set_title("Difference to baseline")
+    axes[0, 0].set_title("Baseline\n(top 5%)",fontsize = 20)
+    axes[0, 1].set_title("Scenario\n(top 5%)",fontsize = 20)
+    axes[0, 2].set_title("Difference to baseline",fontsize = 20)
 
     # --- Axis limits (Denmark) ---
     for ax in axes.ravel():

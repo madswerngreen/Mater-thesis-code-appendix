@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.cluster import DBSCAN
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
-
+raise ValueError('Breakpoint')
 #==============================================
 # LOAD GMM ZONES (background plotting)
 #==============================================
@@ -333,7 +333,7 @@ for k in Ks:
         title=f"Optimal for k={k} New Charger locations"
     )
 
-plt.figure(figsize=(6, 4))
+plt.figure(figsize=(5, 4))
 
 plt.plot(
     Ks,

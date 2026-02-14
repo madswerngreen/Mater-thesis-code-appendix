@@ -143,22 +143,25 @@ print(f"Finished ingestion. One CSV per truck in {output_folder}, truck mapping 
 # -----------------------
 # Finalization: Convert CSVs to Parquet
 # -----------------------
+
+DTYPE_SCHEMA = {
+    "latitude": "int32",
+    "longitude": "int32",
+    "speed": "int16",
+    "heading": "int16",
+    "CO2EmissionClass": "int8",
+    "weightLimits": "int16",
+    "TruckID": "int32",
+}
+
 csv_files = list(output_folder.glob("truck_*.csv"))
 
 for csv_file in tqdm(csv_files, desc="Converting CSV to Parquet"):
     df = pd.read_csv(csv_file, parse_dates=["time"])
     df = df.sort_values("time").reset_index(drop=True)
-
-    # Downcast here (one-shot, faster overall)
-    df["latitude"] = pd.to_numeric(df["latitude"], downcast="integer")
-    df["longitude"] = pd.to_numeric(df["longitude"], downcast="integer")
-    df["speed"] = pd.to_numeric(df["speed"], downcast="integer")
-    df["heading"] = pd.to_numeric(df["heading"], downcast="integer")
-    df["weightLimits"] = pd.to_numeric(df["weightLimits"], downcast="integer")
-    df["CO2EmissionClass"] = pd.to_numeric(df["CO2EmissionClass"], downcast="integer")
-    df["TruckID"] = pd.to_numeric(df["TruckID"], downcast="integer")
+    df = df.astype(DTYPE_SCHEMA)
 
     parquet_file = csv_file.with_suffix(".parquet")
     df.to_parquet(parquet_file, index=False)
 
-    csv_file.unlink()
+    #csv_file.unlink()
