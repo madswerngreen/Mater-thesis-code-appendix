@@ -285,7 +285,7 @@ def plot_all_configs_side_by_side(all_results, fig_dir="../Results/Figures/"):
 
     # NEW: use constrained_layout
     fig, axes = plt.subplots(
-        1, 3, figsize=(10, 4), sharey=True
+        1, 3, figsize=(7, 3), sharey=True
     )
     plt.style.use("seaborn-v0_8")
 
@@ -333,7 +333,7 @@ def plot_all_configs_side_by_side(all_results, fig_dir="../Results/Figures/"):
     )
     """
     plt.tight_layout()
-    fig.subplots_adjust(bottom=0.2)
+    fig.subplots_adjust(bottom=0.3)
     out_path = fig_dir + "ALL_CONFIGS_side_by_side.png"
     fig.savefig(out_path, dpi=200)
     plt.show()
@@ -376,11 +376,11 @@ for cfg in CONFIGS:
     # -------------------------------------------------
     res = all_results[name]
     
-    plot_from_quantiles(res, var="trip_time_quantiles"      ,config=name)
-    plot_from_quantiles(res, var="trip_distance_quantiles"  ,config=name)
-    plot_from_quantiles(res, var="trip_count_quantiles"     ,config=name)
+    #plot_from_quantiles(res, var="trip_time_quantiles"      ,config=name)
+    #plot_from_quantiles(res, var="trip_distance_quantiles"  ,config=name)
+    #plot_from_quantiles(res, var="trip_count_quantiles"     ,config=name)
 
-plot_all_configs(all_results, var="trip_time_quantiles")
-plot_all_configs(all_results, var="trip_distance_quantiles")
-plot_all_configs(all_results, var="trip_count_quantiles")
+#plot_all_configs(all_results, var="trip_time_quantiles")
+#plot_all_configs(all_results, var="trip_distance_quantiles")
+#plot_all_configs(all_results, var="trip_count_quantiles")
 plot_all_configs_side_by_side(all_results)
